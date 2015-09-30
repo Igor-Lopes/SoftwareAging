@@ -2,6 +2,7 @@
 ** Ilinois Institute of Technology
 ** Software that simulated the aging phenomena on memory.
 ** Authors: Igor Lopes, Shuo Yan
+** This class will be resposible for memory allocation and reproducing software aging.
 ** September 21st, 2015
 ** -------------------------------------------------------------------------*/
 
@@ -13,22 +14,23 @@ using namespace std;
 class Memory{
 
 private:
-int minSize;
-int maxSize;
-int staticSize;
-bool isStatic;
+int minSize; //Min size to be allocated if not static stressing.
+int maxSize; //Max size to be allocated if not static stressing.
+int staticSize; ////Size to be allocated if static stressing.
+bool isStatic; //Check if static testing. [To be removed in next commit, unnecessary]
 
-	public: Memory(int min, int max, int statSize, bool isStat){
+	public: Memory(int min, int max, int statSize, bool isStat){ //Constructor
 		srand(time(0)); //Sets the seed
+		//Sets values
 		minSize = min;
 		maxSize = max;
 		staticSize = statSize;
 		isStatic = isStat;
 	}
 
-	public: int getSize(){ return rand() % 1024 + 1; }
+	public: int getSize(){ return rand() % 1024 + 1; } //Gets random size in interval
 
-	public: char getChar(){
+	public: char getChar(){ //Gets random character
 		const char alphabet[]=
                 "abcdefghijklmnopqrstuvwxyz"
                 "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -38,22 +40,22 @@ bool isStatic;
         return alphabet[rand() % lenght];
 	}
 
-	public: void allocDynamic(){
-		int size = getSize() * 1000;
-		char *pchar;
-		pchar = (char*) malloc (size);
-		for(int i = 0; i < size; i++){
+	public: void allocDynamic(){ //Dynamic allocation (Random allocation of block memory of random size)
+		int size = getSize() * 1000; //Kbytes to Bytes.
+		char *pchar; //Pointer.
+		pchar = (char*) malloc (size); //Request memory to heap.
+		for(int i = 0; i < size; i++){ //Gives pointer values so it will stay stuck in memory.
 			pchar[i] = getChar();
 		}
 		cout << "Memory Allocated: " << size << "bytes" << endl;
 	}
 
-	public: void allocStatic(){
-		int size = staticSize * 1000;
-                char *pchar;
-		pchar = (char*) malloc (size);
+	public: void allocStatic(){ //Static allocation (Static memory allocation)
+		int size = staticSize * 1000; //Kbytes to Bytes
+                char *pchar; //Pointer
+		pchar = (char*) malloc (size); //Request memory to heap.
                 for(int i = 0; i < size; i++){
-                        pchar[i] = getChar();
+                        pchar[i] = getChar(); //Gives pointer values so it will stay stuck in memory.
                 }
 		cout << "Memory Allocated: " << size << "bytes" << endl;
 	}
