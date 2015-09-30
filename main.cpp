@@ -5,44 +5,55 @@
 ** September 21st, 2015
 ** -------------------------------------------------------------------------*/
 
-#include <iostream> //Standard
+#include <iostream>
 #include <unistd.h> //Library which has the sleep command.
 #include <pthread.h> //The library used to manage posix threads.
+#include <cstdlib>
 //------------------Headers--------------------------------------------------
 #include "Parameters.h"
 #include "Memory.h"
 
 using namespace std;
 
+
+int getRndTime(int n2, int n1){ return rand()% n2 + n1; } //Gets reandom interval.
+
 void  *thread(void *arg){ //Posix thread method that will allocate memory and simulate the aging phenomena.
-	Parameters p; //Instance of the class Parameters from Parameters.h
-	p.readParameters(); //Call method to read parameters.
-	p.setParameters(); //Call method to set values read from Parameters.dat
-	//Get values
-	int minSize = p.getMinSize();
-	int maxSize = p.getMaxSize();
-	int minInterv = p.getMinInterval();
-	int maxInterv = p.getMaxInterval();
-	int staticSize = p.getStaticSize();
-	int staticTime = p.getStaticTime();
-	bool isStatic = p.getStatic();
-	bool isRunning = p.getStatus();
-        Memory mem( minSize, maxSize, staticSize, isStatic ); //Instance of the class Memory from Memory.h
+        Parameters p;
+        p.readParameters();
+        p.setParameters();
+        //Get the values from the Parameter class in Parameter.h
+        int minSize = p.getMinSize();
+        int maxSize = p.getMaxSize();
+        int minInterv = p.getMinInterval();
+        int maxInterv = p.getMaxInterval();
+        int staticSize = p.getStaticSize();
+        int staticTime = p.getStaticTime();
+        bool isStatic = p.getStatic();
+        bool isRunning = p.getStatus();
+        Memory mem( minSize, maxSize, staticSize, isStatic );
         int seconds = 0;
-	cout << "-------------------------- Sysstress: Running --------------------------"<<endl;
-        while(isRunning){
+        cout << "-------------------------- Sysstress: Running --------------------------"<<endl;
+	while(isRunning){
                 if(seconds == 0){
-                        seconds = staticTime; //Frequency
-                        mem.allocStatic(); 
-                }else{
-			p.readParameters();
-        		p.setParameters();
-			isRunning = p.getStatus();
+                        if(isStatic == true){ 
+                                seconds = staticTime; //Frequency
+                                mem.allocStatic();
+                                cout << "Seconds:" << seconds<<endl;
+                        } else {
+                                seconds = getRndTime( maxInterv, minInterv );
+                                cout << "Seconds:" << seconds<<endl;
+                                mem.allocDynamic();
+                        }
+                } else { 
+                        p.readParameters();
+                        p.setParameters();
+                        isRunning = p.getStatus();
                         sleep(1);
                         seconds--;
                 }
         }
-	cout << "-------------------------- Sysstress: Endend --------------------------"<<endl;
+        cout << "-------------------------- Sysstress: Endend --------------------------"<<endl;
 }
 
 int main(){
@@ -59,4 +70,3 @@ int main(){
 pthread_exit(NULL);
 return 0;
 }
-
