@@ -5,7 +5,7 @@
 ** September 21st, 2015
 ** -------------------------------------------------------------------------*/
 
-#include <iostream>
+#include <iostream> //Standard
 #include <unistd.h> //Library which has the sleep command.
 #include <pthread.h> //The library used to manage posix threads.
 //------------------Headers--------------------------------------------------
@@ -15,9 +15,10 @@
 using namespace std;
 
 void  *thread(void *arg){ //Posix thread method that will allocate memory and simulate the aging phenomena.
-	Parameters p;
-	p.readParameters();
-	p.setParameters();
+	Parameters p; //Instance of the class Parameters from Parameters.h
+	p.readParameters(); //Call method to read parameters.
+	p.setParameters(); //Call method to set values read from Parameters.dat
+	//Get values
 	int minSize = p.getMinSize();
 	int maxSize = p.getMaxSize();
 	int minInterv = p.getMinInterval();
@@ -26,13 +27,13 @@ void  *thread(void *arg){ //Posix thread method that will allocate memory and si
 	int staticTime = p.getStaticTime();
 	bool isStatic = p.getStatic();
 	bool isRunning = p.getStatus();
-        Memory mem( minSize, maxSize, staticSize, isStatic );
+        Memory mem( minSize, maxSize, staticSize, isStatic ); //Instance of the class Memory from Memory.h
         int seconds = 0;
 	cout << "-------------------------- Sysstress: Running --------------------------"<<endl;
         while(isRunning){
                 if(seconds == 0){
                         seconds = staticTime; //Frequency
-                        mem.allocStatic();
+                        mem.allocStatic(); 
                 }else{
 			p.readParameters();
         		p.setParameters();
