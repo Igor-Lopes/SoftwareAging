@@ -59,8 +59,8 @@ bool isStatic; //Check if static testing. [To be removed in next commit, unneces
                 }
 		cout << "Memory Allocated: " << size << "bytes" << endl;
 	}
-
-	 public: void debugValues(){ //Print the values of the variables passed to this class.
+	//[To be removed] Print the values of the variables passed to this class.
+	 public: void debugValues(){ 
                 cout <<"Min Size:"<< minSize <<endl;
                 cout <<"Max Size:"<< maxSize <<endl;
                 cout <<"Static Size:"<< staticSize <<endl;
