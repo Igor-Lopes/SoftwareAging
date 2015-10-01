@@ -26,7 +26,7 @@ int staticTime;
 bool isRunning;
 bool isStatic;
 	public: void readParameters(){ //Reads Parameters.dat and all its content
-        	ifstream fin ("Parameters.dat");
+        	ifstream fin ("Parameters.config");
         	string line;
         	int last_index = 0;
         	while(getline(fin, line)){
@@ -81,8 +81,8 @@ bool isStatic;
 	public: bool getStatus(){ return isRunning; }
 
 	public: bool getStatic(){ return isStatic; }
-
-	public: void debugValues(){ //Debug: Print the values of the variables read from the Parameters file.
+	//[To be removed] Debug: Print the values of the variables read from the Parameters file.
+	public: void debugValues(){ 
 		cout <<"Min Size:"<< getMinSize() <<endl;
 		cout <<"Max Size:"<< getMaxSize() <<endl;
 		cout <<"Min Interv:"<< getMinInterval() <<endl;
